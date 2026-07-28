@@ -1,0 +1,28 @@
+{
+  "name": "Grateful Guide Service",
+  "short_name": "Grateful Guide",
+  "description": "Guided fly and gear fishing in Northern Michigan — night mousing for trophy brown trout, streamer and dry fly trips, Big Manistee salmon, and Torch Lake perch.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0F1D18",
+  "theme_color": "#0F1D18",
+  "icons": [
+    {
+      "src": "/assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
