@@ -72,15 +72,22 @@ a{color:inherit}
  * full wordmark, six nav links, phone button):
  *
  *   brand   56 + 12 gap + ~225 wordmark        = ~293
- *   nav     50 chars @ ~7.6px + padding + gaps = ~470
- *   button  "Call / Text (517) 388-6514"       = ~236
- *   2 x 20px flex gaps                         =   40
- *                                                ~1039 <= 1072  ok
+ * With eight links the full-size row no longer fits at any width, so the
+ * compact tier below applies to every desktop width. Budget, computed from IBM
+ * Plex Mono's 600/1000em advance (rem = 16px, so .68rem = 10.88px and one
+ * character costs 0.6 x 10.88 + 0.04em tracking = ~6.96px):
  *
- * The seventh nav link ("Book") ate most of the old slack, so the nav gap and
- * tracking came down a little and the compact tier now runs to 1300px. These
- * numbers are estimates; tests/header.mjs measures the real thing at
- * 961/1024/1100/1200/1280/1440/1600 and fails if the row ever overflows.
+ *   brand   48 + 10 gap + ~207 wordmark        = ~265
+ *   nav     55 chars @ ~6.96px + padding+gaps  = ~499
+ *   button  "Call / Text (517) 388-6514"       = ~222
+ *   2 x 14px flex gaps                         =   28
+ *                                                ~1003 <= 1072  ~69px slack
+ *
+ * At 961-1090 the wrap is narrower than its 1120px cap, so the tightest tier
+ * drops another step: ~885 against 913 at the 961px worst case.
+ *
+ * These are computed, not measured — this project's browser-based header test
+ * is not being run. Worth an eyeball at ~961px and ~1440px after any nav change.
  */
 .topbar .wrap{display:flex;align-items:center;gap:20px;min-height:78px}
 .brand{
@@ -117,9 +124,14 @@ nav.main a[aria-current="page"]{color:var(--moon);border-bottom-color:var(--lant
 }
 .nav-toggle:hover{border-color:var(--lantern);color:var(--lantern-soft)}
 
-/* Compact desktop tier: 961-1300px, where seven nav links plus a 56px badge
-   plus the full phone label no longer fit inside the 1120px wrap. */
-@media (min-width:961px) and (max-width:1300px){
+/* Compact desktop tier — now every desktop width, not a band.
+   With eight nav links the full-size row (56px badge, 1rem wordmark, .72rem nav)
+   needs ~1091px against the 1072px the wrap can ever offer, so it overflowed at
+   *every* width above 1300 rather than at some awkward middle size. The compact
+   row needs ~1003px, which clears with 69px to spare. The cost is that the 56px
+   badge and the full-size wordmark no longer appear on wide screens; the nav
+   fitting on one line is worth more than 8px of badge. */
+@media (min-width:961px){
   .topbar .wrap{gap:14px;min-height:72px}
   .brand{font-size:.92rem;gap:10px}
   .brand-badge img{width:48px;height:48px}
@@ -136,8 +148,8 @@ nav.main a[aria-current="page"]{color:var(--moon);border-bottom-color:var(--lant
   .topbar .wrap{gap:12px}
   .brand{font-size:.82rem;gap:9px}
   .brand-badge img{width:42px;height:42px}
-  nav.main{gap:9px}
-  nav.main a{font-size:.64rem;letter-spacing:.02em}
+  nav.main{gap:7px}
+  nav.main a{font-size:.64rem;letter-spacing:.01em}
   .call-btn{font-size:.71rem;padding:9px 10px}
 }
 
@@ -252,6 +264,113 @@ nav.main a[aria-current="page"]{color:var(--moon);border-bottom-color:var(--lant
 .btn-dark{background:var(--pine);color:var(--moon)}
 .btn-dark:hover{background:var(--night)}
 
+/* =========================================================== theme scope ===
+ * The site has exactly two surfaces: paper (light) and night (dark). Sections
+ * pick one; components live inside them.
+ *
+ * The invariant that keeps them from bleeding into each other:
+ *
+ *     A component that paints its own background must declare its own text
+ *     colour. Never inherit ink across a surface boundary.
+ *
+ * Break it and you get the failure this block exists to prevent: the rate card
+ * is a light card with no colour of its own, so inside the night-coloured ice
+ * section it inherited that section's near-white ink and rendered white text on
+ * its own near-white background — the prices were in the markup and simply
+ * could not be seen.
+ *
+ * So the two lists below are the whole system:
+ *
+ *   .surface-night   every dark section. Sets its own ink, and re-colours the
+ *                    handful of light components it is allowed to host.
+ *   .surface-paper   every light-surfaced component. Coloured for paper
+ *                    unconditionally, so it is correct on either surface.
+ *
+ * Adding a section or a card means adding it to one of these lists. It does not
+ * mean writing another one-off colour override further down the file — those
+ * are what made the bug invisible to review in the first place, because whether
+ * they worked depended on which rule happened to come last.
+ * ========================================================================= */
+
+/* Dark surfaces. The sticky header, the footer and the lightbox set their own
+   ink at their own definitions; these are the content sections. */
+.hero,
+.after-dark,
+.booking,
+.on-night{color:var(--moon)}
+
+/* Light-surfaced components. Each of these paints a --moon or --paper-2 card,
+   so each carries paper ink regardless of the section around it. */
+.trip,
+.rates,
+.policy,
+.next-card,
+.quote-card,
+.embed-frame{color:var(--ink)}
+
+/* Components the night surface is allowed to host, re-inked for night.
+   `.policy` is the only one that appears on both. */
+.booking .policy{background:transparent;border-color:rgba(245,247,239,.22);color:var(--moon)}
+.booking .policy h3{color:var(--lantern-soft)}
+.booking .policy li{color:#DCE3D6;border-bottom-color:rgba(245,247,239,.1)}
+
+/* Shared elements whose paper colours are unreadable on night. These are
+   defensive: not every pairing occurs today, but each one is a rule that would
+   silently fail if a section were ever restyled. */
+.after-dark .kicker,.booking .kicker,.on-night .kicker,.hero .kicker{color:var(--lantern-soft)}
+.after-dark .section-intro,.booking .section-intro,.on-night .section-intro,
+.hero .section-intro{color:var(--dark-body)}
+.after-dark .prose a,.booking .prose a,.on-night .prose a,.hero .prose a{color:var(--lantern-soft)}
+.after-dark .prose a:hover,.booking .prose a:hover,.on-night .prose a:hover,
+.hero .prose a:hover{color:var(--lantern)}
+.after-dark .prose blockquote,.booking .prose blockquote,.on-night .prose blockquote{
+  color:var(--dark-body);
+}
+.after-dark .chip,.booking .chip,.on-night .chip,.hero .chip{
+  border-color:rgba(245,247,239,.45);color:var(--moon);
+}
+.after-dark figure.shot figcaption,.booking figure.shot figcaption,
+.on-night figure.shot figcaption,.hero figure.shot figcaption{color:var(--mist)}
+
+/* The phone line that sits under every calendar CTA. Paper by default, re-inked
+   for night — it appears on both surfaces (rate cards are paper, the booking
+   band is night), which is exactly the case this block exists to handle. */
+.alt-contact{
+  margin-top:12px;font-family:var(--mono);font-size:.76rem;letter-spacing:.02em;
+  line-height:1.5;color:var(--ink-3);
+}
+.alt-contact a{color:var(--pine);text-decoration:underline;text-underline-offset:3px}
+.alt-contact a:hover{color:var(--lantern)}
+.after-dark .alt-contact,.booking .alt-contact,.on-night .alt-contact,
+.hero .alt-contact{color:var(--dark-fine)}
+.after-dark .alt-contact a,.booking .alt-contact a,.on-night .alt-contact a,
+.hero .alt-contact a{color:var(--lantern-soft)}
+.after-dark .alt-contact a:hover,.booking .alt-contact a:hover,
+.on-night .alt-contact a:hover,.hero .alt-contact a:hover{color:var(--lantern)}
+
+/* A light card inside a dark section is a nested paper surface. The dark rules
+   above are descendant selectors, so without this they would reach *through* a
+   light card and re-ink its contents — the ice-fishing rate card sits inside
+   `.after-dark`, so its phone line would have gone pale-on-pale, which is the
+   original bug wearing a different hat. Three classes deep, so these win on
+   specificity rather than on source order. */
+.after-dark .rates,.booking .rates,.on-night .rates,.hero .rates,
+.after-dark .trip,.booking .trip,.on-night .trip,.hero .trip,
+.after-dark .next-card,.booking .next-card,.on-night .next-card,.hero .next-card,
+.after-dark .quote-card,.booking .quote-card,.on-night .quote-card,.hero .quote-card{
+  color:var(--ink);
+}
+.after-dark .rates .alt-contact,.booking .rates .alt-contact,
+.on-night .rates .alt-contact,.hero .rates .alt-contact,
+.after-dark .trip .alt-contact,.booking .trip .alt-contact,
+.on-night .trip .alt-contact,.hero .trip .alt-contact{color:var(--ink-3)}
+.after-dark .rates .alt-contact a,.booking .rates .alt-contact a,
+.on-night .rates .alt-contact a,.hero .rates .alt-contact a,
+.after-dark .trip .alt-contact a,.booking .trip .alt-contact a,
+.on-night .trip .alt-contact a,.hero .trip .alt-contact a{color:var(--pine)}
+.after-dark .rates .fine,.booking .rates .fine,.on-night .rates .fine,
+.hero .rates .fine{color:var(--ink-3)}
+
 /* --------------------------------------------------------- section frame -- */
 section{padding:80px 0}
 section.tight{padding:56px 0}
@@ -321,9 +440,11 @@ h3{font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.2}
   background:var(--night);color:var(--moon);
   background-image:radial-gradient(ellipse 60% 45% at 78% 12%, rgba(217,146,46,.14), transparent 60%);
 }
-.after-dark .kicker,.on-night .kicker{color:var(--lantern-soft)}
+/* Kicker, section-intro, figcaption, chip and prose-link colours for this
+   surface live in the theme-scope block near the top of the file. Only the
+   headings and the loose paragraph case are left here. */
 .after-dark h2,.on-night h2,.on-night h3{color:var(--moon)}
-.after-dark .section-intro,.on-night .section-intro,.on-night p{color:var(--dark-body)}
+.after-dark > .wrap > p,.on-night p{color:var(--dark-body)}
 .dark-cols{display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:start;margin-top:20px}
 @media (max-width:860px){.dark-cols{grid-template-columns:1fr;gap:34px}}
 .dark-cols img{border-radius:8px;border:1px solid rgba(245,247,239,.15)}
@@ -400,7 +521,7 @@ figure.shot figcaption{
   font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--ink-3);
   margin-top:10px;line-height:1.5;
 }
-.on-night figure.shot figcaption,.after-dark figure.shot figcaption{color:var(--mist)}
+/* figcaption ink on night surfaces: see the theme-scope block. */
 
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:34px 0}
 @media (max-width:700px){.duo{grid-template-columns:1fr}}
@@ -458,15 +579,19 @@ figure.shot figcaption{
 .contact-sm{font-size:1.1rem}
 .booking p{color:var(--dark-body)}
 .booking a.inline{color:var(--lantern-soft)}
-.policy{border:1px solid rgba(245,247,239,.22);border-radius:8px;padding:24px}
+/* Paper is the default here, per the theme-scope block: `.booking .policy`
+   above re-inks it for the night band. */
+.policy{
+  background:var(--moon);border:1px solid var(--rule);border-radius:8px;padding:24px;
+}
 .policy h3{
   font-family:var(--mono);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--lantern-soft);margin-bottom:14px;font-weight:500;
+  color:var(--pine);margin-bottom:14px;font-weight:500;
 }
 .policy ul{list-style:none}
 .policy li{
-  font-family:var(--mono);font-size:.83rem;color:#DCE3D6;line-height:1.5;
-  padding:10px 0;border-bottom:1px solid rgba(245,247,239,.1);
+  font-family:var(--mono);font-size:.83rem;color:var(--ink-2);line-height:1.5;
+  padding:10px 0;border-bottom:1px solid var(--rule);
 }
 .policy li:last-child{border-bottom:none}
 
@@ -511,11 +636,9 @@ figure.shot figcaption{
    narrow columns instead of squeezing the label to one word a line. */
 .price-line.trip-type{flex-wrap:wrap;gap:2px 12px}
 .price-line.trip-type .amt{white-space:normal;color:var(--ink-3)}
-/* The policy card is designed for the night-coloured booking band; on paper it
-   needs paper's ink. */
-.policy-light{border-color:var(--rule);background:var(--moon)}
-.policy-light h3{color:var(--pine)}
-.policy-light li{color:var(--ink-2);border-bottom-color:var(--rule)}
+/* `.policy-light` used to live here as an override. It is gone: `.policy` is
+   paper by default now and `.booking .policy` re-inks it for the night band,
+   so no page needs a variant class to get readable text. */
 
 /* ---------------------------------------------------------------- footer -- */
 footer.site{background:#0B1512;color:var(--mist);padding:40px 0 32px}
