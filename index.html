@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Traverse City Fishing Guide | Night Mousing, Trout &amp; Salmon Trips — Grateful Guide Service</title>
-<meta name="description" content="Guided fly and gear fishing out of South Boardman, 20 minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Big Manistee salmon, and Torch Lake perch. All gear included. Call or text (517) 388-6514.">
+<meta name="description" content="Guided fly and gear fishing out of South Boardman, 20 minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Manistee salmon, family panfish trips, and Torch Lake perch. All gear included. Call or text (517) 388-6514.">
 <link rel="canonical" href="https://www.gratefulguideservice.com/">
 <meta name="theme-color" content="#0F1D18">
 <link rel="icon" href="./favicon.ico" sizes="16x16 32x32 48x48">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Grateful Guide Service">
 <meta property="og:title" content="Traverse City Fishing Guide | Grateful Guide Service">
-<meta property="og:description" content="Guided fly and gear fishing out of South Boardman, 20 minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Big Manistee salmon, and Torch Lake perch. All gear included. Call or text (517) 388-6514.">
+<meta property="og:description" content="Guided fly and gear fishing out of South Boardman, 20 minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Manistee salmon, family panfish trips, and Torch Lake perch. All gear included. Call or text (517) 388-6514.">
 <meta property="og:url" content="https://www.gratefulguideservice.com/">
 <meta property="og:image" content="https://www.gratefulguideservice.com/assets/img/og-image.png">
 <meta property="og:image:type" content="image/png">
@@ -35,7 +35,7 @@
   "@type": "LocalBusiness",
   "@id": "https://www.gratefulguideservice.com/#business",
   "name": "Grateful Guide Service",
-  "description": "Guided fishing trips in Northern Michigan: night mousing and streamer fishing for brown trout, dry fly trips, Big Manistee River salmon, and perch and ice fishing near Traverse City.",
+  "description": "Guided fishing trips in Northern Michigan: night mousing and streamer fishing for brown trout, dry fly trips, Manistee River salmon, family-friendly summer panfish trips, and perch and ice fishing near Traverse City.",
   "url": "https://www.gratefulguideservice.com/",
   "telephone": "+1-517-388-6514",
   "email": "clr517@hotmail.com",
@@ -65,6 +65,24 @@
   "sameAs": [
     "https://www.facebook.com/gratefulguideservices-107425530788070/"
   ],
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "name": "Book a guided fishing trip",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.gratefulguideservice.com/book/",
+      "inLanguage": "en-US",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ]
+    },
+    "result": {
+      "@type": "Reservation",
+      "name": "Guided fishing trip reservation",
+      "url": "https://www.gratefulguideservice.com/book/"
+    }
+  },
   "makesOffer": [
     {
       "@type": "Offer",
@@ -89,8 +107,22 @@
     },
     {
       "@type": "Offer",
-      "name": "Full Day Salmon Trip, Big Manistee River (up to 2 anglers)",
+      "name": "Full Day Salmon Trip, Manistee River (up to 2 anglers)",
       "price": "495",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Summer Panfish Trip, inland lakes (full day, up to 2 anglers)",
+      "price": "495",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Summer Panfish Trip, inland lakes (half day, up to 2 anglers)",
+      "price": "375",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock"
     },
@@ -125,10 +157,18 @@
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "How do I book?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two ways, both first-class: pick a trip and an open date on the booking calendar at /book/, or call or text me at (517) 388-6514. A $150 deposit reserves the date, and cancellations require 48 hours notice."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "What if it's my first time fishing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not a problem. I have the perfect section of river and the right equipment for beginners — you will have real opportunities at quality fish while learning the skill throughout the day or evening."
+        "text": "Not a problem. I have the perfect section of river and the right equipment for beginners — you will have real opportunities at quality fish while learning the skill throughout the day or evening. Kids and family trips are welcome too, and a summer panfish trip on one of the quiet lakes near Traverse City is the perfect place to start."
       }
     },
     {
@@ -144,7 +184,7 @@
       "name": "Where are you located?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "South Boardman, Michigan — about 20 miles east of Traverse City, and within an hour of most major trout streams in Northern Michigan including the Boardman, Big Manistee, Jordan and Au Sable rivers."
+        "text": "South Boardman, Michigan — about 20 miles east of Traverse City, and within an hour of most major trout streams in Northern Michigan including the Boardman, Manistee, Jordan and Au Sable rivers."
       }
     },
     {
@@ -168,7 +208,7 @@
       "name": "How many people can come?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "River and perch trips are priced for up to two anglers, with a third angler for $100 more. Ice fishing is priced per angler."
+        "text": "River, panfish and perch trips are priced for up to two anglers, with a third angler for $100 more. Ice fishing is priced per angler."
       }
     }
   ]
@@ -196,6 +236,7 @@
         <a href="./salmon-fishing-manistee/">Salmon</a>
         <a href="./perch-fishing-torch-lake/">Perch & Ice</a>
         <a href="./gallery/">Gallery</a>
+        <a href="./book/">Book</a>
     </nav>
     <a class="call-btn" href="tel:+15173886514">Call / Text (517) 388-6514</a>
   </div>
@@ -220,10 +261,10 @@
         <div class="hero-copy">
           <p class="eyebrow">Traverse City Fishing Guide · Northern Michigan</p>
           <h1>Big browns feed after dark.</h1>
-          <p class="lede">Guided fly and gear fishing out of South Boardman, twenty minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Big Manistee salmon, and Torch Lake perch — all gear, flies, and know-how included.</p>
+          <p class="lede">Guided fly and gear fishing out of South Boardman, twenty minutes from Traverse City. Night mousing for trophy brown trout, streamer and dry fly trips, Manistee salmon, and Torch Lake perch — plus easy summer panfish days for kids and families. All gear, flies, and know-how included.</p>
           <div class="cta-row">
-            <a class="btn btn-amber" href="tel:+15173886514">Book a trip — (517) 388-6514</a>
-            <a class="btn btn-ghost" href="./night-mousing/">The mousing trip &rarr;</a>
+            <a class="btn btn-amber" href="./book/">Book a trip</a>
+            <a class="btn btn-ghost" href="tel:+15173886514">Call or text (517) 388-6514</a>
           </div>
           <p class="since">Guiding Michigan rivers since 2016 · Casey Richardson, owner &amp; guide</p>
         </div>
@@ -280,15 +321,27 @@
         </article>
         
         <article class="trip">
-          <h3><a href="./salmon-fishing-manistee/">Salmon — Big Manistee</a></h3>
+          <h3><a href="./salmon-fishing-manistee/">Salmon — Manistee</a></h3>
           <p class="season">Late Summer – Fall · Jet boat</p>
-          <p>King and coho salmon on Michigan's famed Big Manistee River. Top-of-the-line gear and meticulously cured bait; the jet boat keeps us on fish all day.</p>
+          <p>King and coho salmon on Michigan's famed Manistee River. Top-of-the-line gear and meticulously cured bait; the jet boat keeps us on fish all day.</p>
           <div class="price-lines">
             <div class="price-line"><span>Full day · 7–8 hrs</span><span class="amt">$495 / 2 anglers</span></div>
             <div class="price-line"><span>Half day · 4 hrs</span><span class="amt">$375 / 2 anglers</span></div>
             <div class="price-line"><span>Third angler</span><span class="amt">+$100</span></div>
           </div>
           <p class="fine">Lunch on full days · $150 deposit · 48-hr cancellation notice</p>
+        </article>
+        
+        <article class="trip">
+          <h3><a href="./perch-fishing-torch-lake/#panfish">Summer Panfish</a></h3>
+          <p class="season">Summer · Lakes · Family friendly</p>
+          <p>Bluegill and panfish on quiet lakes near Traverse City — bobber fishing and drop-shotting. Easy, fun, and perfect for kids and families. A great first fishing trip.</p>
+          <div class="price-lines">
+            <div class="price-line"><span>Full day · 7–8 hrs</span><span class="amt">$495 / 2 anglers</span></div>
+            <div class="price-line"><span>Half day · 4 hrs</span><span class="amt">$375 / 2 anglers</span></div>
+            <div class="price-line"><span>Third angler</span><span class="amt">+$100</span></div>
+          </div>
+          <p class="fine">All gear &amp; bait included · $150 deposit</p>
         </article>
         
         <article class="trip">
@@ -300,7 +353,7 @@
             <div class="price-line"><span>Half day · 4 hrs</span><span class="amt">$375 / 2 anglers</span></div>
             <div class="price-line"><span>Third angler</span><span class="amt">+$100</span></div>
           </div>
-          <p class="fine">Fish cleaning included · weather permitting</p>
+          <p class="fine">Fish cleaning available: $20 per limit · weather permitting</p>
         </article>
         
         <article class="trip">
@@ -330,7 +383,7 @@
             <span class="sub">5–7 hrs · up to 2 anglers · all gear &amp; mice included · $150 deposit</span>
           </div>
           <div class="cta-row" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:26px">
-            <a class="btn btn-amber" href="tel:+15173886514">Book a night</a>
+            <a class="btn btn-amber" href="./book/">Book a night</a>
             <a class="btn btn-ghost" href="./night-mousing/">Everything about mousing &rarr;</a>
           </div>
         </div>
@@ -381,7 +434,7 @@
       <p class="section-intro">Based in South Boardman, twenty miles east of Traverse City. Whether you are staying in Traverse City, Charlevoix, Petoskey or Manistee, there is a trip that works from where you are.</p>
       <ul class="river-chips">
         <li class="chip">Boardman River</li>
-        <li class="chip">Big Manistee River</li>
+        <li class="chip">Manistee River</li>
         <li class="chip">Jordan River</li>
         <li class="chip">Au Sable River</li>
         <li class="chip">Torch Lake</li>
@@ -423,8 +476,12 @@
       <p class="kicker">Good to Know</p>
       <h2>Questions, answered.</h2>
       <details>
+        <summary>How do I book?</summary>
+        <p>Two ways, both first-class: pick a trip and an open date on the <a href="./book/">booking calendar</a>, or call or text me at <a href="tel:+15173886514">(517) 388-6514</a>. A $150 deposit reserves the date, and cancellations require 48 hours notice.</p>
+      </details>
+      <details>
         <summary>What if it's my first time fishing?</summary>
-        <p>Not a problem. I have the perfect section of river and the right equipment for beginners — you will have real opportunities at quality fish while learning the skill throughout the day or evening.</p>
+        <p>Not a problem. I have the perfect section of river and the right equipment for beginners — you will have real opportunities at quality fish while learning the skill throughout the day or evening. Kids and family trips are welcome too, and a <a href="./perch-fishing-torch-lake/#panfish">summer panfish trip</a> on one of the quiet lakes near Traverse City is the perfect place to start.</p>
       </details>
       <details>
         <summary>What do I need to bring?</summary>
@@ -444,7 +501,7 @@
       </details>
       <details>
         <summary>How many people can come?</summary>
-        <p>River and perch trips are priced for up to two anglers; a third angler is $100 more. Ice fishing is priced per angler.</p>
+        <p>River, panfish and perch trips are priced for up to two anglers; a third angler is $100 more. Ice fishing is priced per angler.</p>
       </details>
     </div>
   </section>
@@ -455,7 +512,8 @@
       <h2>The river's waiting. Let's pick a date.</h2>
       <div class="book-cols">
         <div>
-          <p>Call or text is the fastest way to check open dates — I am on the water most days, so a text works great.</p>
+          <p>The booking calendar shows real-time availability. Call or text works just as well — I am on the water most days, so a text usually gets the fastest answer.</p>
+          <p style="margin:20px 0 6px"><a class="btn btn-amber" href="./book/">See open dates &amp; book</a></p>
           <a class="contact-big" href="tel:+15173886514">(517) 388-6514</a><br>
           <a class="contact-big contact-sm" href="mailto:clr517@hotmail.com">clr517@hotmail.com</a>
           <p style="margin-top:18px">You can also send a message on <a class="inline" href="https://www.facebook.com/gratefulguideservices-107425530788070/" rel="noopener">Facebook</a>.</p>
@@ -467,6 +525,7 @@
             <li>48-hour cancellation notice required</li>
             <li>All gear, flies &amp; tackle included</li>
             <li>Lunch included on full-day river trips</li>
+            <li>Fish cleaning available: $20 per limit</li>
             <li>Gratuity is not included in trip rates</li>
             <li>MI fishing license required (michigan.gov/dnr)</li>
             <li>Rates are per boat, up to 2 anglers, unless noted</li>
@@ -488,8 +547,8 @@
         <ul>
           <li><a href="./night-mousing/">Night Mousing</a></li>
           <li><a href="./trout-fishing/">Streamer &amp; Dry Fly</a></li>
-          <li><a href="./salmon-fishing-manistee/">Big Manistee Salmon</a></li>
-          <li><a href="./perch-fishing-torch-lake/">Perch &amp; Ice Fishing</a></li>
+          <li><a href="./salmon-fishing-manistee/">Manistee Salmon</a></li>
+          <li><a href="./perch-fishing-torch-lake/">Panfish, Perch &amp; Ice</a></li>
           <li><a href="./gallery/">Photo Gallery</a></li>
         </ul>
       </div>

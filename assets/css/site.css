@@ -72,13 +72,15 @@ a{color:inherit}
  * full wordmark, six nav links, phone button):
  *
  *   brand   56 + 12 gap + ~225 wordmark        = ~293
- *   nav     46 chars @ ~7.6px + padding + gaps = ~454
+ *   nav     50 chars @ ~7.6px + padding + gaps = ~470
  *   button  "Call / Text (517) 388-6514"       = ~236
  *   2 x 20px flex gaps                         =   40
- *                                                ~1023 <= 1072  ok
+ *                                                ~1039 <= 1072  ok
  *
- * At 1024 the row has 976px, so a compact tier below 1180 shrinks the badge,
- * the wordmark and the nav: ~922 against 976 — ~54px of slack.
+ * The seventh nav link ("Book") ate most of the old slack, so the nav gap and
+ * tracking came down a little and the compact tier now runs to 1300px. These
+ * numbers are estimates; tests/header.mjs measures the real thing at
+ * 961/1024/1100/1200/1280/1440/1600 and fails if the row ever overflows.
  */
 .topbar .wrap{display:flex;align-items:center;gap:20px;min-height:78px}
 .brand{
@@ -93,9 +95,9 @@ a{color:inherit}
 .brand-badge img{width:56px;height:56px;display:block}
 .brand-text span{color:var(--lantern)}
 
-nav.main{display:flex;gap:16px;margin-left:auto;align-items:center;flex:0 1 auto}
+nav.main{display:flex;gap:13px;margin-left:auto;align-items:center;flex:0 1 auto}
 nav.main a{
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
   text-decoration:none;color:var(--mist);padding:6px 2px;border-bottom:2px solid transparent;
   white-space:nowrap;
 }
@@ -115,15 +117,28 @@ nav.main a[aria-current="page"]{color:var(--moon);border-bottom-color:var(--lant
 }
 .nav-toggle:hover{border-color:var(--lantern);color:var(--lantern-soft)}
 
-/* Compact desktop tier: 961-1180px, where six nav links plus a 56px badge plus
-   the full phone label no longer fit inside the 1120px wrap. */
-@media (min-width:961px) and (max-width:1180px){
-  .topbar .wrap{gap:16px;min-height:72px}
+/* Compact desktop tier: 961-1300px, where seven nav links plus a 56px badge
+   plus the full phone label no longer fit inside the 1120px wrap. */
+@media (min-width:961px) and (max-width:1300px){
+  .topbar .wrap{gap:14px;min-height:72px}
   .brand{font-size:.92rem;gap:10px}
   .brand-badge img{width:48px;height:48px}
-  nav.main{gap:13px}
-  nav.main a{font-size:.68rem;letter-spacing:.05em}
+  nav.main{gap:12px}
+  nav.main a{font-size:.68rem;letter-spacing:.04em}
   .call-btn{font-size:.74rem;padding:9px 12px}
+}
+/* Tightest desktop tier: 961-1090, where the wrap is narrower than its 1120px
+   cap and the compact row still does not fit. Everything shrinks a further
+   step; the phone button keeps its full "Call / Text (517) 388-6514" label,
+   because the sticky bar is the one place the number must always read in full.
+   Measured at 961 — see tests/header.mjs. */
+@media (min-width:961px) and (max-width:1090px){
+  .topbar .wrap{gap:12px}
+  .brand{font-size:.82rem;gap:9px}
+  .brand-badge img{width:42px;height:42px}
+  nav.main{gap:9px}
+  nav.main a{font-size:.64rem;letter-spacing:.02em}
+  .call-btn{font-size:.71rem;padding:9px 10px}
 }
 
 @media (max-width:960px){
@@ -336,7 +351,9 @@ h3{font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.2}
 .dark-price .sub{font-family:var(--mono);font-size:.76rem;color:var(--mist);letter-spacing:.05em;flex:1 1 22ch;max-width:46ch;line-height:1.55}
 
 /* ---------------------------------------------------------------- rivers -- */
-.rivers{background:var(--paper-2)}
+/* `.alt` is the same tinted paper as `.rivers` without the semantics — for any
+   section that needs to break up two adjacent light blocks. */
+.rivers,.alt{background:var(--paper-2)}
 .river-chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;list-style:none}
 .chip{
   font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
@@ -452,6 +469,53 @@ figure.shot figcaption{
   padding:10px 0;border-bottom:1px solid rgba(245,247,239,.1);
 }
 .policy li:last-child{border-bottom:none}
+
+/* ----------------------------------------------------------- book page --- */
+/*
+ * The embed sits on `--paper`, the lightest surface on the site: a third-party
+ * widget brings its own white card and its own type, and anything darker turns
+ * that into a visible patch. The frame matches the content column exactly
+ * (`.wrap` already caps at --wrap and adds the gutter, so 100% here *is* the
+ * column) so the calendar lines up with the copy above it.
+ */
+.book-page h1{
+  font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.9vw,2.6rem);
+  line-height:1.09;letter-spacing:-.01em;margin-bottom:18px;
+}
+.book-page .section-intro{font-size:1.06rem}
+.embed-frame{
+  width:100%;max-width:var(--wrap);margin:34px auto 0;
+  background:var(--moon);border:1px solid var(--rule);border-radius:8px;
+  overflow:hidden;
+}
+/* The widget renders its own scroller; this keeps a half-loaded iframe from
+   collapsing the page and jumping the footer up. */
+.embed-frame iframe{width:100%;min-height:640px;border:0;display:block}
+.embed-placeholder{
+  padding:56px 28px;text-align:center;
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 12px,rgba(46,74,62,.045) 12px,rgba(46,74,62,.045) 24px);
+}
+.ep-kicker{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--pine);margin-bottom:12px;
+}
+.ep-title{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1.15;margin-bottom:14px}
+.ep-body{max-width:56ch;margin:0 auto 26px;color:var(--ink-2)}
+.embed-fallback{
+  margin-top:22px;font-family:var(--mono);font-size:.84rem;letter-spacing:.02em;color:var(--ink-2);
+}
+.embed-fallback a{color:var(--pine);text-decoration:underline;text-underline-offset:3px}
+.embed-fallback a:hover{color:var(--lantern)}
+/* Trip-type rows carry a long rate string; let it wrap under the name on
+   narrow columns instead of squeezing the label to one word a line. */
+.price-line.trip-type{flex-wrap:wrap;gap:2px 12px}
+.price-line.trip-type .amt{white-space:normal;color:var(--ink-3)}
+/* The policy card is designed for the night-coloured booking band; on paper it
+   needs paper's ink. */
+.policy-light{border-color:var(--rule);background:var(--moon)}
+.policy-light h3{color:var(--pine)}
+.policy-light li{color:var(--ink-2);border-bottom-color:var(--rule)}
 
 /* ---------------------------------------------------------------- footer -- */
 footer.site{background:#0B1512;color:var(--mist);padding:40px 0 32px}
